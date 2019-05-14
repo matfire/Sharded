@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.10)
 project(Sharded)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -6,10 +6,21 @@ set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
-find_package(glfw3 3.2 REQUIRED)
-find_package(OpenGL REQUIRED)
+
+if(WIN32)
+    add_subdirectory("${PROJECT_SOURCE_DIR}/libs/win/glfw")
+    find_package(OpenGL REQUIRED)
+else()
+    find_package(glfw3 3.2 REQUIRED)
+    find_package(OpenGL REQUIRED)
+endif(WIN32)
 
 
 add_library(Sharded SHARED Engine.cpp Engine.h)
-target_link_libraries(Sharded glfw ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY})
-target_include_directories(Sharded PUBLIC ${OPENGL_INCLUDE_DIR})
+if(WIN32)
+    include_directories("${PROJECT_SOURCE_DIR}/libs/win/glfw/include")
+    target_link_libraries(Sharded glfw ${OPENGL_glu_LIBRARY} ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES})
+else()
+    target_link_libraries(Sharded glfw ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY})
+    target_include_directories(Sharded PUBLIC ${OPENGL_INCLUDE_DIR})
+endif(WIN32)

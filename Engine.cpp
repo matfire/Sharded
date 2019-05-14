@@ -47,7 +47,7 @@ bool Engine::start(std::string title) {
     // Alpha setup
     glEnable(GL_ALPHA_TEST);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SOURCE0_ALPHA, GL_ONE_MINUS_SRC1_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     return true;
 }
