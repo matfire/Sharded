@@ -7,18 +7,12 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 
-if(WIN32)
-    add_subdirectory("${PROJECT_SOURCE_DIR}/libs/win/glfw")
-    find_package(OpenGL REQUIRED)
-else()
-    find_package(glfw3 3.2 REQUIRED)
-    find_package(OpenGL REQUIRED)
-endif(WIN32)
-
+add_subdirectory("libs/glfw")
+find_package(OpenGL REQUIRED)
 
 add_library(Sharded SHARED Engine.cpp Engine.h)
 if(WIN32)
-    include_directories("${PROJECT_SOURCE_DIR}/libs/win/glfw/include")
+    include_directories("libs/glfw/include")
     target_link_libraries(Sharded glfw ${OPENGL_glu_LIBRARY} ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES})
 else()
     target_link_libraries(Sharded glfw ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY})
