@@ -7,6 +7,10 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#ifdef _WIN32
+#pragma comment(lib, "opengl32.lib")
+#endif
+
 class Engine {
 public:
     Engine();
